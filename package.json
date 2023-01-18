@@ -1,0 +1,30 @@
+{
+  "name": "solidity-compiler",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "babel-node -r esm src/index.js",
+    "dev": "nodemon --exec babel-node src/index.js"
+  },
+  "author": "Anis",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  },
+  "dependencies": {
+    "@babel/cli": "^7.17.10",
+    "@babel/core": "^7.18.2",
+    "@babel/node": "^7.17.10",
+    "@babel/plugin-transform-spread": "^7.17.12",
+    "@babel/preset-env": "^7.18.2",
+    "@babel/preset-stage-2": "^7.8.3",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "esm": "^3.2.25",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "@openzeppelin/contracts": "^4.7.3",
+    "solc": "^0.8.17",
+    "web3": "^1.8.0"
+  }
+}

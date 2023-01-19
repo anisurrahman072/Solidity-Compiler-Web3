@@ -19,7 +19,7 @@
 
 >
 
-- `git clone project`
+- `git clone git@github.com:anisurrahman072/Solidity-Compiler-Web3.git`
 - `npm install`
 - Create `.env` file following `.env-demo`
 - Add your Smart Contract in `/contracts` folder with `.sol` extension

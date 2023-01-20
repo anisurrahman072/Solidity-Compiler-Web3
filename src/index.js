@@ -82,7 +82,7 @@ require("dotenv").config();
     console.log("Final result from blockchain: ", payload, result);
   });
 
-  // ******************* Events Print *******************
+  // ******************* Subscribe New Events *******************
   contract.events
     .indexedInfo(() => {})
     .on("connected", function (subscriptionId) {
@@ -97,5 +97,24 @@ require("dotenv").config();
     })
     .on("error", function (error, receipt) {
       console.log("Error:", error, receipt);
+    });
+
+  // ***************** Print All previous events *****************
+  contract
+    .getPastEvents(
+      "indexedInfo",
+      {
+        filter: {
+          from: "0x64c58412d3a1aB9e8Ef915EcACdcbF102e05E82f",
+        },
+        fromBlock: 0,
+        toBlock: "latest",
+      },
+      function (error, events) {
+        console.log("All events: ", events);
+      }
+    )
+    .then(function (events) {
+      console.log("All events: ", events);
     });
 })();

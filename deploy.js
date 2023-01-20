@@ -31,7 +31,9 @@ async function main() {
 
   // deploying our contract
   const result = await new web3.eth.Contract(
-    contracts["MyContract.sol"]["MyContract"].abi,
+    contracts[`${process.env.CONTRACT_NAME_TO_DEPLOY}.sol`][
+      process.env.CONTRACT_NAME_TO_DEPLOY
+    ].abi,
     null,
     {
       transactionBlockTimeout: 200,
@@ -41,7 +43,9 @@ async function main() {
     }
   )
     .deploy({
-      data: contracts["MyContract.sol"]["MyContract"].evm.bytecode.object,
+      data: contracts[`${process.env.CONTRACT_NAME_TO_DEPLOY}.sol`][
+        process.env.CONTRACT_NAME_TO_DEPLOY
+      ].evm.bytecode.object,
     })
     .send({
       // gasPrice: 210000000000, // MAINNET
@@ -51,20 +55,116 @@ async function main() {
     });
 
   console.log("#### Contract deployed to", result.options.address);
-  fs.writeFileSync(
-    path.join(__dirname, "createdContractAddress.txt"),
-    result.options.address
-  );
 
-  // Store ABI (Application Binary Interface) & Contract Bytecode
-  fs.writeFileSync(
-    path.join(__dirname, "abi.txt"),
-    JSON.stringify(contracts["MyContract.sol"]["MyContract"].abi)
-  );
+  // ############## IF not Created Contract named Folder, then create Contract named Folder ##############
+  // ############## IF not Created Contract named Folder, then create Contract named Folder ##############
+  if (
+    !fs.existsSync(
+      path.join(
+        __dirname,
+        "uploadedContracts",
+        process.env.CONTRACT_NAME_TO_DEPLOY
+      )
+    )
+  ) {
+    fs.mkdirSync(
+      path.join(
+        __dirname,
+        "uploadedContracts",
+        process.env.CONTRACT_NAME_TO_DEPLOY
+      )
+    );
 
-  fs.writeFileSync(
-    path.join(__dirname, "bytecode.txt"),
-    contracts["MyContract.sol"]["MyContract"].evm.bytecode.object
+    console.log("Folder Created Successfully.");
+  }
+
+  // ############################# Save deployed Contracts data #############################
+  // ############################# Save deployed Contracts data #############################
+  fs.readdir(
+    path.join(
+      __dirname,
+      "uploadedContracts",
+      process.env.CONTRACT_NAME_TO_DEPLOY
+    ),
+    (err, files) => {
+      // ******************* Count how many Folders Exist before *******************
+      let newContractFolderName = String(files.length);
+
+      // ******************* Get DATE & TIME for folder name *******************
+      let runningDateTime = new Date();
+      let date = runningDateTime.toDateString("dd");
+      let time = runningDateTime.toLocaleTimeString("en-US");
+      newContractFolderName = newContractFolderName + " _ " + date + " " + time;
+
+      // ******************* Create New Folder for by DATE + TIME *******************
+      fs.mkdirSync(
+        path.join(
+          __dirname,
+          "uploadedContracts",
+          process.env.CONTRACT_NAME_TO_DEPLOY,
+          newContractFolderName
+        )
+      );
+
+      // ******************************* STORE Contract address *******************************
+      fs.writeFileSync(
+        path.join(
+          __dirname,
+          "uploadedContracts",
+          process.env.CONTRACT_NAME_TO_DEPLOY,
+          newContractFolderName,
+          "createdContractAddress.txt"
+        ),
+        result.options.address
+      );
+
+      // ****************** Store ABI (Application Binary Interface) & Contract Bytecode ******************
+      fs.writeFileSync(
+        path.join(
+          __dirname,
+          "uploadedContracts",
+          process.env.CONTRACT_NAME_TO_DEPLOY,
+          newContractFolderName,
+          "abi.txt"
+        ),
+        JSON.stringify(
+          contracts[`${process.env.CONTRACT_NAME_TO_DEPLOY}.sol`][
+            process.env.CONTRACT_NAME_TO_DEPLOY
+          ].abi
+        )
+      );
+
+      // ************************************ STORE bytecode ************************************
+      fs.writeFileSync(
+        path.join(
+          __dirname,
+          "uploadedContracts",
+          process.env.CONTRACT_NAME_TO_DEPLOY,
+          newContractFolderName,
+          "bytecode.txt"
+        ),
+        contracts[`${process.env.CONTRACT_NAME_TO_DEPLOY}.sol`][
+          process.env.CONTRACT_NAME_TO_DEPLOY
+        ].evm.bytecode.object
+      );
+
+      // *********************** Copy the Contract File ************************
+      fs.copyFile(
+        path.join(
+          __dirname,
+          "contracts",
+          process.env.CONTRACT_NAME_TO_DEPLOY + ".sol"
+        ),
+        path.join(
+          __dirname,
+          "uploadedContracts",
+          process.env.CONTRACT_NAME_TO_DEPLOY,
+          newContractFolderName,
+          process.env.CONTRACT_NAME_TO_DEPLOY + ".sol"
+        ),
+        () => {}
+      );
+    }
   );
 }
 

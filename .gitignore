@@ -1,8 +1,10 @@
 .vscode
 node_modules
 
-abi.txt
-bytecode.txt
-createdContractAddress.txt
+# abi.txt
+# bytecode.txt
+# createdContractAddress.txt
+
+uploadedContracts
 
 .env

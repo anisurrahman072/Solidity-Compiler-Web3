@@ -2,13 +2,17 @@ const path = require("path");
 const fs = require("fs");
 const solc = require("solc");
 
-const lotteryPath = path.join(__dirname, "contracts", "MyContract.sol");
+const lotteryPath = path.join(
+  __dirname,
+  "contracts",
+  `${process.env.CONTRACT_NAME_TO_DEPLOY}.sol`
+);
 const source = fs.readFileSync(lotteryPath, "utf8");
 
 var input = {
   language: "Solidity",
   sources: {
-    "MyContract.sol": {
+    [`${process.env.CONTRACT_NAME_TO_DEPLOY}.sol`]: {
       content: `${source}`,
     },
   },

@@ -9,7 +9,7 @@ contract WomenWorldCupNft2023 is ERC721URIStorage {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
 
-    constructor() ERC721("BasementSports Women World Cup 2023", "BasementSports") {
+    constructor() ERC721("Basement Sports Women's World Cup 2023 Collection", "BasementSports") {
         owner = msg.sender;
     }
 

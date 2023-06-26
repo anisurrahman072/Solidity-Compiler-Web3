@@ -48,9 +48,9 @@ async function main() {
       ].evm.bytecode.object,
     })
     .send({
-      // gasPrice: 210000000000, // MAINNET
-      // gas: 26000000, // MAINNET
-      gas: "5000000", // Mumbai Testnet
+      gasPrice:
+        process.env.BLOCK_CHAIN_ID == "137" ? 210000000000 : 21000000000,
+      gas: process.env.BLOCK_CHAIN_ID == "137" ? 26000000 : 5000000,
       from: process.env.TRANSACTION_SIGNER_PUBLIC_ADDESS,
     });
 
